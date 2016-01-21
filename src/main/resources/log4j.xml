@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="GBK" ?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+  threshold="debug">
+
+  <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%t] [%c{1}] %m%n" />
+    </layout>
+  </appender>
+
+  <appender name="COLOR-CONSOLE" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.err" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%t] [%c{1}] %m%n" />
+    </layout>
+  </appender>
+  
+  <appender name="COLOR-CONSOLE-TESTING" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.err" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%m%n" />
+    </layout>
+  </appender>
+  
+  <appender name="ASYNC_CONSOLE" class="org.apache.log4j.AsyncAppender">
+    <param name="BufferSize" value="8192"/>
+    <appender-ref ref="CONSOLE" />
+  </appender>
+
+  <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="/u01/watsons-server/logs/watsons-server.log" />
+    <param name="Append" value="true" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%t] [%c{1}] %m%n" />
+    </layout>
+  </appender>
+
+  <root>
+    <level value="INFO" />
+    <appender-ref ref="CONSOLE" />
+  </root>
+</log4j:configuration>
