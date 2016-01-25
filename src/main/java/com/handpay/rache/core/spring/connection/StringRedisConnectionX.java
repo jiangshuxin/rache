@@ -81,13 +81,61 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 */
 	public void setObjEx(String nameSpace,byte[] key,Object obj,Long expire);
 	
-	public Object getObj(byte[] key); 
+	/**
+	 * 获取缓存对象(默认命名空间)
+	 * @param key
+	 * @return
+	 */
+	public Object getObj(byte[] key);
+	/**
+	 * 获取缓存对象(默认命名空间)
+	 * @param key
+	 * @return
+	 */
 	public Object getObj(String key);
+	/**
+	 * 获取缓存对象
+	 * @param nameSpace
+	 * @param key
+	 * @return
+	 */
 	public Object getObj(String nameSpace,byte[] key); 
+	/**
+	 * 获取缓存对象
+	 * @param nameSpace
+	 * @param key
+	 * @return
+	 */
 	public Object getObj(String nameSpace,String key);
 	
+	/**
+	 * 获取缓存对象(默认命名空间)
+	 * @param key
+	 * @param clazz
+	 * @return
+	 */
 	public <T> T getObj(byte[] key,Class<T> clazz);
+	/**
+	 * 获取缓存对象(默认命名空间)
+	 * @param key
+	 * @param clazz
+	 * @return
+	 */
 	public <T> T getObj(String key,Class<T> clazz);
+	/**
+	 * 获取缓存对象
+	 * @param nameSpace
+	 * @param key
+	 * @param clazz
+	 * @return
+	 */
 	public <T> T getObj(String nameSpace,byte[] key,Class<T> clazz);
+	/**
+	 * 获取缓存对象
+	 * @param nameSpace
+	 * @param key
+	 * @param clazz
+	 * @return
+	 */
 	public <T> T getObj(String nameSpace,String key,Class<T> clazz);
 }
