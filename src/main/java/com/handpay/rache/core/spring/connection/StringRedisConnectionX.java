@@ -5,51 +5,51 @@ import org.springframework.data.redis.connection.StringRedisConnection;
 public interface StringRedisConnectionX extends StringRedisConnection {
 
 	/**
-	 * è®¾ç½®ç¼“å­˜(æ— å‘½åç©ºé—´)
+	 * ÉèÖÃ»º´æ(ÎŞÃüÃû¿Õ¼ä)
 	 * @param key
 	 * @param value
 	 */
 	public void setEx(byte[] key, byte[] value) ;
 
 	/**
-	 * è®¾ç½®ç¼“å­˜(æ— å‘½åç©ºé—´)
+	 * ÉèÖÃ»º´æ(ÎŞÃüÃû¿Õ¼ä)
 	 * @param key
 	 * @param value
 	 */
 	public void setEx(String key, String value) ;
 	
 	/**
-	 * è®¾ç½®ç¼“å­˜(æ— å‘½åç©ºé—´/åªåšå¯¹è±¡åºåˆ—åŒ–)
+	 * ÉèÖÃ»º´æ(ÎŞÃüÃû¿Õ¼ä/Ö»×ö¶ÔÏóĞòÁĞ»¯)
 	 * @param key
 	 * @param obj
 	 */
-	public void setObj(byte[] key,Object obj);
+	public void setObjOriginal(byte[] key,Object obj);
 	/**
-	 * è®¾ç½®ç¼“å­˜(æ— å‘½åç©ºé—´/åªåšå¯¹è±¡åºåˆ—åŒ–)
+	 * ÉèÖÃ»º´æ(ÎŞÃüÃû¿Õ¼ä/Ö»×ö¶ÔÏóĞòÁĞ»¯)
 	 * @param key
 	 * @param obj
 	 */
-	public void setObj(String key,Object obj);
+	public void setObjOriginal(String key,Object obj);
 	
 	/**
-	 * ä½¿ç”¨ç³»ç»Ÿé»˜è®¤é…ç½®è¿›è¡Œç¼“å­˜ã€‚é»˜è®¤é…ç½®åŒ…æ‹¬ï¼š
-	 * <li>ç¼“å­˜è¿‡æœŸæ—¶é—´
-	 * <li>ç¼“å­˜keyå‘½åç©ºé—´(å³å‰ç¼€)
+	 * Ê¹ÓÃÏµÍ³Ä¬ÈÏÅäÖÃ½øĞĞ»º´æ¡£Ä¬ÈÏÅäÖÃ°üÀ¨£º
+	 * <li>»º´æ¹ıÆÚÊ±¼ä
+	 * <li>»º´ækeyÃüÃû¿Õ¼ä(¼´Ç°×º)
 	 * @param key
 	 * @param obj
 	 */
 	public void setObjEx(byte[] key,Object obj);
 	/**
-	 * ä½¿ç”¨ç³»ç»Ÿé»˜è®¤é…ç½®è¿›è¡Œç¼“å­˜ã€‚é»˜è®¤é…ç½®åŒ…æ‹¬ï¼š
-	 * <li>ç¼“å­˜è¿‡æœŸæ—¶é—´
-	 * <li>ç¼“å­˜keyå‘½åç©ºé—´(å³å‰ç¼€)
+	 * Ê¹ÓÃÏµÍ³Ä¬ÈÏÅäÖÃ½øĞĞ»º´æ¡£Ä¬ÈÏÅäÖÃ°üÀ¨£º
+	 * <li>»º´æ¹ıÆÚÊ±¼ä
+	 * <li>»º´ækeyÃüÃû¿Õ¼ä(¼´Ç°×º)
 	 * @param key
 	 * @param obj
 	 */
 	public void setObjEx(String key,Object obj);
 	
 	/**
-	 * è®¾ç½®ç¼“å­˜(ä½¿ç”¨nameSpaceåŒ¹é…çš„è¿‡æœŸæ—¶é—´ï¼Œå¦‚ä¸åŒ¹é…åˆ™ä½¿ç”¨é»˜è®¤è¿‡æœŸæ—¶é—´)
+	 * ÉèÖÃ»º´æ(Ê¹ÓÃnameSpaceÆ¥ÅäµÄ¹ıÆÚÊ±¼ä£¬Èç²»Æ¥ÅäÔòÊ¹ÓÃÄ¬ÈÏ¹ıÆÚÊ±¼ä)
 	 * @param nameSpace
 	 * @param key
 	 * @param obj
@@ -57,7 +57,7 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	public void setObjEx(String nameSpace,String key,Object obj);
 	
 	/**
-	 * è®¾ç½®ç¼“å­˜(ä½¿ç”¨nameSpaceåŒ¹é…çš„è¿‡æœŸæ—¶é—´ï¼Œå¦‚ä¸åŒ¹é…åˆ™ä½¿ç”¨é»˜è®¤è¿‡æœŸæ—¶é—´)
+	 * ÉèÖÃ»º´æ(Ê¹ÓÃnameSpaceÆ¥ÅäµÄ¹ıÆÚÊ±¼ä£¬Èç²»Æ¥ÅäÔòÊ¹ÓÃÄ¬ÈÏ¹ıÆÚÊ±¼ä)
 	 * @param nameSpace
 	 * @param key
 	 * @param obj
@@ -65,7 +65,7 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	public void setObjEx(String nameSpace,byte[] key,Object obj);
 	
 	/**
-	 * è®¾ç½®ç¼“å­˜(æœ€å®Œæ•´æ¥å£ä¹‹ä¸€)
+	 * ÉèÖÃ»º´æ(×îÍêÕû½Ó¿ÚÖ®Ò»)
 	 * @param nameSpace
 	 * @param key
 	 * @param obj
@@ -73,7 +73,7 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 */
 	public void setObjEx(String nameSpace,String key,Object obj,Long expire);
 	/**
-	 * è®¾ç½®ç¼“å­˜(æœ€å®Œæ•´æ¥å£ä¹‹ä¸€)
+	 * ÉèÖÃ»º´æ(×îÍêÕû½Ó¿ÚÖ®Ò»)
 	 * @param nameSpace
 	 * @param key
 	 * @param obj
@@ -82,26 +82,26 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	public void setObjEx(String nameSpace,byte[] key,Object obj,Long expire);
 	
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡(é»˜è®¤å‘½åç©ºé—´)
+	 * »ñÈ¡»º´æ¶ÔÏó(Ä¬ÈÏÃüÃû¿Õ¼ä)
 	 * @param key
 	 * @return
 	 */
 	public Object getObj(byte[] key);
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡(é»˜è®¤å‘½åç©ºé—´)
+	 * »ñÈ¡»º´æ¶ÔÏó(Ä¬ÈÏÃüÃû¿Õ¼ä)
 	 * @param key
 	 * @return
 	 */
 	public Object getObj(String key);
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡
+	 * »ñÈ¡»º´æ¶ÔÏó
 	 * @param nameSpace
 	 * @param key
 	 * @return
 	 */
 	public Object getObj(String nameSpace,byte[] key); 
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡
+	 * »ñÈ¡»º´æ¶ÔÏó
 	 * @param nameSpace
 	 * @param key
 	 * @return
@@ -109,21 +109,21 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	public Object getObj(String nameSpace,String key);
 	
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡(é»˜è®¤å‘½åç©ºé—´)
+	 * »ñÈ¡»º´æ¶ÔÏó(Ä¬ÈÏÃüÃû¿Õ¼ä)
 	 * @param key
 	 * @param clazz
 	 * @return
 	 */
 	public <T> T getObj(byte[] key,Class<T> clazz);
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡(é»˜è®¤å‘½åç©ºé—´)
+	 * »ñÈ¡»º´æ¶ÔÏó(Ä¬ÈÏÃüÃû¿Õ¼ä)
 	 * @param key
 	 * @param clazz
 	 * @return
 	 */
 	public <T> T getObj(String key,Class<T> clazz);
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡
+	 * »ñÈ¡»º´æ¶ÔÏó
 	 * @param nameSpace
 	 * @param key
 	 * @param clazz
@@ -131,7 +131,7 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 */
 	public <T> T getObj(String nameSpace,byte[] key,Class<T> clazz);
 	/**
-	 * è·å–ç¼“å­˜å¯¹è±¡
+	 * »ñÈ¡»º´æ¶ÔÏó
 	 * @param nameSpace
 	 * @param key
 	 * @param clazz

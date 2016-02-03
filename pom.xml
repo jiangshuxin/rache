@@ -293,6 +293,12 @@
 					<artifactId>jcl-over-slf4j</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 	</dependencies>
 </project>

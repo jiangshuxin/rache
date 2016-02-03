@@ -71,7 +71,7 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	}
 
 	/**
-	 * æ ¹æ®nameSpaceå‚æ•°è·å–å¯¹åº”çš„è¿‡æœŸæ—¶é—´ï¼Œè‹¥ä¸å­˜åœ¨åˆ™è¿”å›é»˜è®¤è¿‡æœŸæ—¶é—´
+	 * ¸ù¾İnameSpace²ÎÊı»ñÈ¡¶ÔÓ¦µÄ¹ıÆÚÊ±¼ä£¬Èô²»´æÔÚÔò·µ»ØÄ¬ÈÏ¹ıÆÚÊ±¼ä
 	 * @param nameSpace
 	 * @return
 	 */
@@ -99,12 +99,12 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	}
 
 	@Override
-	public void setObj(byte[] key, Object obj) {
+	public void setObjOriginal(byte[] key, Object obj) {
 		super.set(key, getValueSerializer().serialize(obj));
 	}
 
 	@Override
-	public void setObj(String key, Object obj) {
+	public void setObjOriginal(String key, Object obj) {
 		super.set(key, getStringSerializer().deserialize(getValueSerializer().serialize(obj)));
 	}
 
