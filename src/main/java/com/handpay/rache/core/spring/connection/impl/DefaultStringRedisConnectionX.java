@@ -3,6 +3,7 @@ package com.handpay.rache.core.spring.connection.impl;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.cache.DefaultRedisCachePrefix;
 import org.springframework.data.redis.cache.RedisCachePrefix;
 import org.springframework.data.redis.connection.DefaultStringRedisConnection;
@@ -85,14 +86,14 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 
 	@Override
 	public void setObjEx(String nameSpace, String key, Object obj, Long expire) {
-		byte[] prefix = cachePrefix.prefix(nameSpace);
+		byte[] prefix = extractPrefix(nameSpace);
 		byte[] result = extractKey(getStringSerializer().serialize(key), prefix);
 		super.setEx(getStringSerializer().deserialize(result), expire, getStringSerializer().deserialize(getValueSerializer().serialize(obj)));
 	}
 
 	@Override
 	public void setObjEx(String nameSpace, byte[] key, Object obj, Long expire) {
-		byte[] prefix = cachePrefix.prefix(nameSpace);
+		byte[] prefix = extractPrefix(nameSpace);
 		byte[] result = extractKey(key, prefix);
 		
 		super.setEx(result, expire, getValueSerializer().serialize(obj));
@@ -132,14 +133,22 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 
 	@Override
 	public Object getObj(String nameSpace, byte[] key) {
-		byte[] prefix = cachePrefix.prefix(nameSpace);
+		byte[] prefix = extractPrefix(nameSpace);
 		byte[] result = extractKey(key, prefix);
 		return getValueSerializer().deserialize(super.get(result));
 	}
 
+	private byte[] extractPrefix(String nameSpace) {
+		byte[] prefix = new byte[0];
+		if(StringUtils.isNotEmpty(nameSpace)){
+			prefix = cachePrefix.prefix(nameSpace);
+		}
+		return prefix;
+	}
+
 	@Override
 	public Object getObj(String nameSpace, String key) {
-		byte[] prefix = cachePrefix.prefix(nameSpace);
+		byte[] prefix = extractPrefix(nameSpace);
 		byte[] result = extractKey(getStringSerializer().serialize(key), prefix);
 		return getValueSerializer().deserialize(super.get(result));
 	}
