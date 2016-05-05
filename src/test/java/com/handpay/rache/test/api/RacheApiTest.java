@@ -23,8 +23,19 @@ public class RacheApiTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(dataProvider = "testCache")
-	public void testCache1(Student s){
-		List list = racheApiService.queryByName1(s.getName());
-		System.out.println(list);
+	public void testMaxConn(final Student s) throws InterruptedException{
+		for(int i=0;i<10000;i++){
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					for(int j=0;j<5;j++){
+						List list = racheApiService.queryByName1(s.getName()+j);
+						//System.out.println(list);
+					}
+				}
+			}).start();
+		}
+		
+		Thread.sleep(100000);
 	}
 }
