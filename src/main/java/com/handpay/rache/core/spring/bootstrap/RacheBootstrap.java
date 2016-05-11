@@ -27,6 +27,12 @@ import com.handpay.rache.core.spring.serializer.FastJSONRedisSerializer;
 
 import redis.clients.jedis.JedisPoolConfig;
 
+/**
+ * rache引导类。能够完成StringRedisTemplateX系列类的装载，并定义默认的bean命名方式，是屏蔽复杂Bean装载过程的轻量级解决方案（但请注意依赖关系）
+ * @see com.handpay.rache.core.spring.StringRedisTemplateX
+ * @author sxjiang
+ *
+ */
 public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 
 	private String targetBeanId;

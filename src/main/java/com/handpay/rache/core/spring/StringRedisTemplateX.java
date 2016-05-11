@@ -8,6 +8,16 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import com.handpay.rache.core.spring.connection.impl.DefaultStringRedisConnectionX;
 
+/**
+ * RedisTemplate实用型扩展类
+ * <li>推荐使用实用型扩展接口StringRedisConnectionX进行回调方法的逻辑编写
+ * <li>根据命名空间维度指定过期时间
+ * <li>具有StringRedisTemplate的一切功能
+ * @see com.handpay.rache.core.spring.connection.StringRedisConnectionX
+ * @see org.springframework.data.redis.core.StringRedisTemplate
+ * @author sxjiang
+ *
+ */
 public class StringRedisTemplateX extends StringRedisTemplate {
 	private Long defaultExpiration;
 	private String defaultNamespace;

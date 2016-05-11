@@ -2,6 +2,13 @@ package com.handpay.rache.core.spring.connection;
 
 import org.springframework.data.redis.connection.StringRedisConnection;
 
+/**
+ * 实用型扩展接口StringRedisConnectionX
+ * <li>方法参数体现命名空间/超时时间
+ * <li>更人性化的类型选择
+ * @author sxjiang
+ *
+ */
 public interface StringRedisConnectionX extends StringRedisConnection {
 
 	/**
