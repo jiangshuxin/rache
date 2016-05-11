@@ -34,15 +34,23 @@ import redis.clients.jedis.JedisPoolConfig;
  *
  */
 public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
-
+	//StringRedisTemplateX的beanId
 	private String targetBeanId;
+	//命名空间/超时时间映射beanId
 	private String expireMapBeanId;
+	//最大空闲
 	private int maxIdle;
+	//最大活跃
 	private int maxActive;
+	//最大等待
 	private int maxWait;
+	//redis connection连接超时时间
 	private int redisTimeout;
+	//默认过期时间
 	private long defaultExpiration;
+	//默认命名空间
 	private String defaultNamespace;
+	//缓存服务监视器url，用于获取redis连接地址(host/port)
 	private String cacheServerURL;
 	private ApplicationContext applicationContext;
 	
@@ -104,8 +112,10 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 		redisCacheManagerXBuilder.addConstructorArgReference("redisTemplate");
 		redisCacheManagerXBuilder.addPropertyValue("usePrefix", true);
 		redisCacheManagerXBuilder.addPropertyValue("defaultExpiration", getDefaultExpiration());
-		redisCacheManagerXBuilder.addDependsOn(getExpireMapBeanId());
-		redisCacheManagerXBuilder.addPropertyReference("expires", getExpireMapBeanId());
+		if(StringUtils.isNotEmpty(getExpireMapBeanId())) {
+			redisCacheManagerXBuilder.addDependsOn(getExpireMapBeanId());
+			redisCacheManagerXBuilder.addPropertyReference("expires", getExpireMapBeanId());
+		}
 		defaultListableBeanFactory.registerBeanDefinition(cacheBeanName, redisCacheManagerXBuilder.getRawBeanDefinition());
 	}
 
@@ -115,8 +125,10 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 		stringRedisTemplateXBuilder.setParentName(strRedisTempBeanName);
 		stringRedisTemplateXBuilder.addPropertyValue("defaultExpiration", getDefaultExpiration());
 		stringRedisTemplateXBuilder.addPropertyValue("defaultNamespace", getDefaultNamespace());
-		stringRedisTemplateXBuilder.addDependsOn(getExpireMapBeanId());
-		stringRedisTemplateXBuilder.addPropertyReference("expireMap", getExpireMapBeanId());
+		if(StringUtils.isNotEmpty(getExpireMapBeanId())) {
+			stringRedisTemplateXBuilder.addDependsOn(getExpireMapBeanId());
+			stringRedisTemplateXBuilder.addPropertyReference("expireMap", getExpireMapBeanId());
+		}
 		defaultListableBeanFactory.registerBeanDefinition(getTargetBeanId(), stringRedisTemplateXBuilder.getRawBeanDefinition());
 	}
 

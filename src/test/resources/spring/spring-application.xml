@@ -15,8 +15,7 @@
 		http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<!-- <import resource="spring-redis.xml" /> -->
-	
+	<!-- 应用部分Begin -->
 	<context:component-scan base-package="com.handpay.**.dao.impl" />
 	<context:component-scan base-package="com.handpay.**.service.impl" />
 	
@@ -29,11 +28,11 @@
 			</list>
 		</property>
 	</bean>
+	<!-- 应用部分End -->
 
-	<util:map id="expireMap" map-class="java.util.HashMap">
-		<entry key="dubboMonitor" value="${redis.cacheManager.expires.dubboMonitor}" />
-	</util:map>
-	
+
+	<!-- Rache部分Begin -->
+	<!-- RacheBootstrap必选 -->
 	<bean class="com.handpay.rache.core.spring.bootstrap.RacheBootstrap" id="RacheBootstrap1">
 		<property name="targetBeanId" value="stringRedisTemplateX"></property>
 		<property name="maxIdle" value="${redis.maxIdle}" />
@@ -45,6 +44,13 @@
 		<property name="expireMapBeanId" value="expireMap"></property>
 	</bean>
 	
+	<!-- expireMap可选 -->
+	<util:map id="expireMap" map-class="java.util.HashMap">
+		<!-- k=命名空间/v=超时时间 -->
+		<entry key="dubboMonitor" value="${redis.cacheManager.expires.dubboMonitor}" />
+	</util:map>
+	
+	<!-- 此RacheBootstrap可选，用于获取其他redis连接 -->
 	<bean class="com.handpay.rache.core.spring.bootstrap.RacheBootstrap" id="RacheBootstrap2">
 		<property name="targetBeanId" value="stringRedisTemplateY"></property>
 		<property name="maxIdle" value="${redis.maxIdle}" />
@@ -55,6 +61,6 @@
 		<property name="defaultNamespace" value="${redis.defaultNamespace}"></property>
 		<property name="expireMapBeanId" value="expireMap"></property>
 	</bean>
-	
+	<!-- Rache部分End -->
 	
 </beans>
