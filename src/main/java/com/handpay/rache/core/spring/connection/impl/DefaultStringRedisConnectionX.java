@@ -77,7 +77,7 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	 * @return
 	 */
 	private Long extractExpireMapping(String nameSpace) {
-		if(getExpireMap().containsKey(nameSpace)){
+		if(getExpireMap() != null && getExpireMap().containsKey(nameSpace)){
 			return getExpireMap().get(nameSpace);
 		}else{
 			return getDefaultExpiration();

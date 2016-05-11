@@ -13,13 +13,6 @@
 		http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
 	<cache:annotation-driven cache-manager="cacheManager" />
-	<bean id="propertyHolder" class="com.handpay.rache.core.spring.config.PropertyHolder" >
-		<property name="locations">
-			<list>
- 				<value>classpath*:redis.properties</value>
-			</list>
-		</property>
-	</bean>
 
 	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxIdle" value="${redis.maxIdle}" />
@@ -32,7 +25,7 @@
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
 		<property name="hostName" value="${redis.host}"></property>
 		<property name="port" value="${redis.port}"></property>
-		<property name="password" value="${redis.pass}"></property>
+		<!-- <property name="password" value="${redis.pass}"></property> -->
 		<property name="timeout" value="${redis.timeout}"></property>
 		<property name="poolConfig" ref="poolConfig"></property>
 	</bean>
@@ -40,6 +33,11 @@
 	<bean id="stringRedisTemplateX" class="com.handpay.rache.core.spring.StringRedisTemplateX" parent="stringRedisTemplate">
 		<property name="defaultExpiration" value="${redis.defaultExpiration}"></property>
 		<property name="defaultNamespace" value="${redis.defaultNamespace}"></property>
+		<property name="expireMap">
+			<map>
+				<entry key="dubboMonitor" value="30"></entry>
+			</map>
+		</property>
 	</bean>
 
 	<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" parent="redisTemplate">
@@ -56,15 +54,9 @@
 	<bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer">
 	</bean>
 	
-	<bean id="cacheManager" class="com.handpay.rache.core.spring.RedisCacheManagerX" depends-on="propertyHolder">
+	<bean id="cacheManager" class="com.handpay.rache.core.spring.RedisCacheManagerX">
 		<constructor-arg name="template" ref="redisTemplate"></constructor-arg>
 		<property name="usePrefix" value="true"></property>
 		<property name="defaultExpiration" value="${redis.defaultExpiration}"></property>
-		<property name="stringRedisTemplateX" ref="stringRedisTemplateX"></property>
-		<property name="expires">
-			<map>
-				<entry key="dubboMonitor" value="30"></entry>
-			</map>
-		</property>
 	</bean>
 </beans>

@@ -8,4 +8,5 @@ public interface RacheApiService {
 
 	Student queryByName(String name);
 	List queryByName1(String name);
+	List queryByNamePipelined(String name);
 }
