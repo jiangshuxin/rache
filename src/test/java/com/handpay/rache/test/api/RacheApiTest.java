@@ -26,7 +26,7 @@ public class RacheApiTest extends AbstractTestNGSpringContextTests {
 	@Test(dataProvider = "testCache")
 	public void testCache(Student s){
 		Student student = racheApiService.queryByName(s.getName());
-		System.out.println(student);
+		System.out.println(student.getClass());
 		/*System.out.println(JedisPoolConfig.getMaxActive());*/
 	}
 	
@@ -34,6 +34,13 @@ public class RacheApiTest extends AbstractTestNGSpringContextTests {
 	public void testPipeline(Student s){
 		List list = racheApiService.queryByNamePipelined(s.getName());
 		System.out.println(list);
+	}
+	
+	@Test(dataProvider = "testCache")
+	public void testPersist(Student s){
+		List list = racheApiService.queryByNamePersist(s.getName());
+		System.out.println(list);
+		System.out.println(list.get(1).getClass());
 	}
 	
 	@Test(dataProvider = "testCache")

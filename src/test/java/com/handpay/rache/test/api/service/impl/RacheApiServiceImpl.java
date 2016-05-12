@@ -34,7 +34,7 @@ public class RacheApiServiceImpl implements RacheApiService {
 			public Student doInRedis(RedisConnection connection) throws DataAccessException {
 				StringRedisConnectionX conn = (StringRedisConnectionX)connection;
 				System.out.println("dubboMonitor="+conn.getObj("dubboMonitor", name));
-				System.out.println("racheTest="+conn.getObj("racheTest", name));
+				System.out.println("racheTest="+conn.getObj("persist", "testKey"));
 				return conn.getObj(name,Student.class);
 			}
 		});
@@ -91,5 +91,39 @@ public class RacheApiServiceImpl implements RacheApiService {
 				return null;//必须返回null
 			}
 		});
+	}
+
+	@Override
+	public List queryByNamePersist(String name) {
+		return stringRedisTemplateX.executePipelined(new RedisCallback<Object>() {
+			@Override
+			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				StringRedisConnectionX conn = (StringRedisConnectionX)connection;
+				Person p = new Person();
+				p.setAge(12);
+				p.setName("sxjiang");
+				conn.setObj("persist", "testKey",p);
+				conn.getObj("", "key1");
+				conn.getObj("persist", "testKey");
+				return null;//必须返回null
+			}
+		});
+	}
+	
+	public static class Person{
+		private String name;
+		private int age;
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public int getAge() {
+			return age;
+		}
+		public void setAge(int age) {
+			this.age = age;
+		}
 	}
 }

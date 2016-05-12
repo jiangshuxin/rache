@@ -3,6 +3,7 @@ package com.handpay.rache.core.spring.connection.impl;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.cache.DefaultRedisCachePrefix;
 import org.springframework.data.redis.cache.RedisCachePrefix;
@@ -88,7 +89,12 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	public void setObjEx(String nameSpace, String key, Object obj, Long expire) {
 		byte[] prefix = extractPrefix(nameSpace);
 		byte[] result = extractKey(getStringSerializer().serialize(key), prefix);
-		super.setEx(getStringSerializer().deserialize(result), expire, getStringSerializer().deserialize(getValueSerializer().serialize(obj)));
+		
+		if(isSimpleValue(obj)){
+			super.setEx(result, expire, getStringSerializer().serialize(String.valueOf(obj)));
+		}else{
+			super.setEx(result, expire, getValueSerializer().serialize(obj));
+		}
 	}
 
 	@Override
@@ -96,16 +102,58 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 		byte[] prefix = extractPrefix(nameSpace);
 		byte[] result = extractKey(key, prefix);
 		
-		super.setEx(result, expire, getValueSerializer().serialize(obj));
+		if(isSimpleValue(obj)){
+			super.setEx(result, expire, getStringSerializer().serialize(String.valueOf(obj)));
+		}else{
+			super.setEx(result, expire, getValueSerializer().serialize(obj));
+		}
 	}
 
 	@Override
-	public void setObjOriginal(byte[] key, Object obj) {
+	public void setObj(String nameSpace, byte[] key, Object obj) {
+		byte[] prefix = extractPrefix(nameSpace);
+		byte[] result = extractKey(key, prefix);
+		
+		if(isSimpleValue(obj)){
+			super.set(result, getStringSerializer().serialize(String.valueOf(obj)));
+		}else{
+			super.set(result, getValueSerializer().serialize(obj));
+		}
+	}
+
+	@Override
+	public void setObj(String nameSpace, String key, Object obj) {
+		byte[] prefix = extractPrefix(nameSpace);
+		byte[] result = extractKey(getStringSerializer().serialize(key), prefix);
+		
+		if(isSimpleValue(obj)){
+			super.set(result, getStringSerializer().serialize(String.valueOf(obj)));
+		}else{
+			super.set(result, getValueSerializer().serialize(obj));
+		}
+	}
+
+	private boolean isSimpleValue(Object obj) {
+		return obj instanceof CharSequence || ClassUtils.isPrimitiveOrWrapper(obj.getClass());
+	}
+
+	@Override
+	public void setObj(String key, Object obj) {
+		setObj(getDefaultNamespace(), key, obj);
+	}
+
+	@Override
+	public void setObj(byte[] key, Object obj) {
+		setObj(getDefaultNamespace(), key, obj);
+	}
+
+	@Override
+	public void put(byte[] key, Object obj) {
 		super.set(key, getValueSerializer().serialize(obj));
 	}
 
 	@Override
-	public void setObjOriginal(String key, Object obj) {
+	public void put(String key, Object obj) {
 		super.set(key, getStringSerializer().deserialize(getValueSerializer().serialize(obj)));
 	}
 

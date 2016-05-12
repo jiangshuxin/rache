@@ -26,17 +26,47 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	public void setEx(String key, String value) ;
 	
 	/**
-	 * 设置缓存(无命名空间/只做对象序列化)
+	 * 设置持久对象(指定命名空间/无过期时间)
+	 * @param nameSpace
 	 * @param key
 	 * @param obj
 	 */
-	public void setObjOriginal(byte[] key,Object obj);
+	public void setObj(String nameSpace,byte[] key,Object obj);
 	/**
-	 * 设置缓存(无命名空间/只做对象序列化)
+	 * 设置持久对象(指定命名空间/无过期时间)
+	 * @param nameSpace
 	 * @param key
 	 * @param obj
 	 */
-	public void setObjOriginal(String key,Object obj);
+	public void setObj(String nameSpace,String key,Object obj);
+	
+	/**
+	 * 设置持久对象(默认命名空间/无过期时间)
+	 * @param key
+	 * @param obj
+	 */
+	public void setObj(String key,Object obj);
+	
+	/**
+	 * 设置持久对象(默认命名空间/无过期时间)
+	 * @param key
+	 * @param obj
+	 */
+	public void setObj(byte[] key,Object obj);
+	
+	/**
+	 * 设置持久对象(无命名空间/无过期时间)
+	 * @param key
+	 * @param obj
+	 */
+	public void put(byte[] key,Object obj);
+	
+	/**
+	 * 设置持久对象(无命名空间/无过期时间)
+	 * @param key
+	 * @param obj
+	 */
+	public void put(String key,Object obj);
 	
 	/**
 	 * 使用系统默认配置进行缓存。默认配置包括：
