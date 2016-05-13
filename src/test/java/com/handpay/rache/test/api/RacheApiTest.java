@@ -1,12 +1,17 @@
 package com.handpay.rache.test.api;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
+import org.testng.collections.Lists;
 
 import com.handpay.rache.test.anno.service.bean.Student;
 import com.handpay.rache.test.api.service.RacheApiService;
@@ -44,19 +49,28 @@ public class RacheApiTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(dataProvider = "testCache")
-	public void testMaxConn(final Student s) throws InterruptedException{
-		for(int i=0;i<10000;i++){
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					for(int j=0;j<5;j++){
-						List list = racheApiService.queryByName1(s.getName()+j);
-						//System.out.println(list);
+	public void testMaxConn(final Student s) throws InterruptedException, ExecutionException{
+		//maxIdle/maxActive=100->804   1000->1300  1->4744  10->1833  有一项为1就4800
+		long begin = System.currentTimeMillis();
+		ExecutorService es = Executors.newCachedThreadPool();
+		List<Future<?>> list = Lists.newArrayList();
+		try {
+			for(int i=0;i<20000;i++){
+				list.add(es.submit(new Runnable() {
+					@Override
+					public void run() {
+						racheApiService.queryByName1(s.getName());
 					}
-				}
-			}).start();
+				}));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		for(Future<?> f :list){
+			f.get();
 		}
-		
-		Thread.sleep(100000);
+		long end = System.currentTimeMillis();
+		System.out.println("Multi thread mode, NoPipelined=="+(end-begin));
 	}
 }

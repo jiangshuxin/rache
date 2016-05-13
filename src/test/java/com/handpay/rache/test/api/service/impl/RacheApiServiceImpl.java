@@ -2,6 +2,9 @@ package com.handpay.rache.test.api.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +31,6 @@ public class RacheApiServiceImpl implements RacheApiService {
 
 	@Override
 	public Student queryByName(final String name) {
-		
 		Student cache = stringRedisTemplateX.execute(new RedisCallback<Student>() {
 			@Override
 			public Student doInRedis(RedisConnection connection) throws DataAccessException {
@@ -66,31 +68,70 @@ public class RacheApiServiceImpl implements RacheApiService {
 
 	@Override
 	public List queryByName1(final String name) {
-		return stringRedisTemplateX.execute(new SessionCallback<List>() {
-
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public List execute(RedisOperations operations) throws DataAccessException {
-				operations.multi();
-				operations.boundValueOps("dubboMonitor"+name).get();
-				operations.boundHashOps("hkey1").put(name, "test");
-				operations.boundHashOps("hkey1").get(name);
-				return operations.exec();
-			}
-		});
+		stringRedisTemplateX.keys( "key1");
+		stringRedisTemplateX.keys( "key2");
+		stringRedisTemplateX.keys( "key3");
+		stringRedisTemplateX.keys( "mobile");
+		return null;
 	}
 
 	@Override
 	public List queryByNamePipelined(final String name) {
-		return stringRedisTemplateX.executePipelined(new RedisCallback<Object>() {
+		
+		long begin = System.currentTimeMillis();
+		for(int i=0;i<2000;i++){
+			stringRedisTemplateX.keys( "key1");
+			stringRedisTemplateX.keys( "key2");
+			stringRedisTemplateX.keys( "key3");
+			stringRedisTemplateX.keys( "mobile");
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("Single thread mode, Nopipelined=="+(end-begin));
+		
+		begin = System.currentTimeMillis();
+		List list = stringRedisTemplateX.executePipelined(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection) throws DataAccessException {
 				StringRedisConnectionX conn = (StringRedisConnectionX)connection;
-				conn.getObj("", "key1");
-				conn.getObj("", "key2");
+				for(int i=0;i<2000;i++){//超过20，Pipelined性能更优
+					conn.keys( "key1");
+					conn.keys( "key2");
+					conn.keys( "key3");
+					conn.keys( "mobile");
+				}
 				return null;//必须返回null
 			}
 		});
+		end = System.currentTimeMillis();
+		System.out.println("Single thread mode, Pipelined=="+(end-begin));
+		
+		
+		begin = System.currentTimeMillis();
+		ExecutorService es = Executors.newCachedThreadPool();
+		try {
+			for(int i=0;i<2000;i++){
+				es.submit(new Runnable() {
+					@Override
+					public void run() {
+						stringRedisTemplateX.keys( "key1");
+						stringRedisTemplateX.keys( "key2");
+						stringRedisTemplateX.keys( "key3");
+						stringRedisTemplateX.keys( "mobile");
+					}
+				}).get();
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		end = System.currentTimeMillis();
+		System.out.println("Multi thread mode, NoPipelined=="+(end-begin));
+		
+		
+		return list;
 	}
 
 	@Override

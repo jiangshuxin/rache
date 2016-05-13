@@ -116,7 +116,7 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 			redisCacheManagerXBuilder.addDependsOn(getExpireMapBeanId());
 			redisCacheManagerXBuilder.addPropertyReference("expires", getExpireMapBeanId());
 		}
-		defaultListableBeanFactory.registerBeanDefinition(cacheBeanName, redisCacheManagerXBuilder.getRawBeanDefinition());
+		defaultListableBeanFactory.registerBeanDefinition(cacheBeanName, redisCacheManagerXBuilder.getBeanDefinition());
 	}
 
 	private void extractStringRedisTemplateXBuilder(String strRedisTempBeanName,
@@ -129,14 +129,14 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 			stringRedisTemplateXBuilder.addDependsOn(getExpireMapBeanId());
 			stringRedisTemplateXBuilder.addPropertyReference("expireMap", getExpireMapBeanId());
 		}
-		defaultListableBeanFactory.registerBeanDefinition(getTargetBeanId(), stringRedisTemplateXBuilder.getRawBeanDefinition());
+		defaultListableBeanFactory.registerBeanDefinition(getTargetBeanId(), stringRedisTemplateXBuilder.getBeanDefinition());
 	}
 
 	private void extractStringRedisTemplateBuilder(String redisTempBeanName, String strRedisTempBeanName,
 			DefaultListableBeanFactory defaultListableBeanFactory) {
 		BeanDefinitionBuilder stringRedisTemplateBuilder = BeanDefinitionBuilder.genericBeanDefinition(StringRedisTemplate.class);
 		stringRedisTemplateBuilder.setParentName(redisTempBeanName);
-		defaultListableBeanFactory.registerBeanDefinition(strRedisTempBeanName, stringRedisTemplateBuilder.getRawBeanDefinition());
+		defaultListableBeanFactory.registerBeanDefinition(strRedisTempBeanName, stringRedisTemplateBuilder.getBeanDefinition());
 	}
 
 	private void extractRedisTemplateBuilder(String jedisFacBeanName, String fastBeanName, String redisTempBeanName,
@@ -144,14 +144,14 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 		BeanDefinitionBuilder redisTemplateBuilder = BeanDefinitionBuilder.genericBeanDefinition(RedisTemplate.class);
 		redisTemplateBuilder.addPropertyReference("connectionFactory", jedisFacBeanName);
 		redisTemplateBuilder.addPropertyReference("defaultSerializer", fastBeanName);
-		defaultListableBeanFactory.registerBeanDefinition(redisTempBeanName, redisTemplateBuilder.getRawBeanDefinition());
+		defaultListableBeanFactory.registerBeanDefinition(redisTempBeanName, redisTemplateBuilder.getBeanDefinition());
 	}
 
 	private void extractFastJSONRedisSerializerBuilder(String fastBeanName,
 			DefaultListableBeanFactory defaultListableBeanFactory) {
 		if(!applicationContext.containsBean(fastBeanName)){
 			BeanDefinitionBuilder fastJSONRedisSerializerBuilder = BeanDefinitionBuilder.genericBeanDefinition(FastJSONRedisSerializer.class);
-			defaultListableBeanFactory.registerBeanDefinition(fastBeanName, fastJSONRedisSerializerBuilder.getRawBeanDefinition());
+			defaultListableBeanFactory.registerBeanDefinition(fastBeanName, fastJSONRedisSerializerBuilder.getBeanDefinition());
 		}
 	}
 
@@ -161,7 +161,7 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 		jedisConnectionFactoryBuilder.addPropertyValue("timeout", redisTimeout);
 		jedisConnectionFactoryBuilder.addPropertyReference("poolConfig", jedisBeanName);
 		extractHostAndPort(jedisConnectionFactoryBuilder);
-		defaultListableBeanFactory.registerBeanDefinition(jedisFacBeanName, jedisConnectionFactoryBuilder.getRawBeanDefinition());
+		defaultListableBeanFactory.registerBeanDefinition(jedisFacBeanName, jedisConnectionFactoryBuilder.getBeanDefinition());
 	}
 
 	private void extractJedisPoolConfigBuilder(String jedisBeanName,
@@ -170,7 +170,7 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 		jedisPoolConfigBuilder.addPropertyValue("maxIdle", getMaxIdle());
 		jedisPoolConfigBuilder.addPropertyValue("maxActive", getMaxActive());
 		jedisPoolConfigBuilder.addPropertyValue("maxWait", getMaxWait());
-		defaultListableBeanFactory.registerBeanDefinition(jedisBeanName, jedisPoolConfigBuilder.getRawBeanDefinition());
+		defaultListableBeanFactory.registerBeanDefinition(jedisBeanName, jedisPoolConfigBuilder.getBeanDefinition());
 	}
 
 	private void extractHostAndPort(BeanDefinitionBuilder jedisConnectionFactoryBuilder) throws IOException {
