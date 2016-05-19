@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class Student implements Serializable {
+public class Student implements Serializable,Cloneable {
 
 	/**
 	 * 
@@ -47,6 +47,16 @@ public class Student implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	@Override
+	public Student clone() {
+		try {
+			return (Student)super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

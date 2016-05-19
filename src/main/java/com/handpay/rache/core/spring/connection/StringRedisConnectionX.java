@@ -1,6 +1,7 @@
 package com.handpay.rache.core.spring.connection;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.redis.connection.StringRedisConnection;
 
@@ -179,17 +180,23 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	public <T> T getObj(String nameSpace,String key,Class<T> clazz);
 	
 	/**
-	 * 获取多个对象
+	 * 获取多个对象(默认命名空间)
 	 * @param keys
 	 * @return
 	 */
 	public List<?> mGetObj(String... keys);
 	
 	/**
-	 * 获取多个对象
+	 * 获取多个对象(默认命名空间)
 	 * @param clazz
 	 * @param keys
 	 * @return
 	 */
 	public <T> List<T> mGetObj(Class<T> clazz,String... keys);
+	
+	/**
+	 * 设置多个对象(默认命名空间)
+	 * @param map
+	 */
+	public void mSetObj(Map<String,Object> map);
 }

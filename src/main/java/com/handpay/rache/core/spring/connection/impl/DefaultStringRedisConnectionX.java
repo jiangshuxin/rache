@@ -13,6 +13,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.handpay.rache.core.spring.connection.StringRedisConnectionX;
 
 public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection implements StringRedisConnectionX {
@@ -256,6 +257,18 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 			list.add((T)getValueSerializer().deserialize(getStringSerializer().serialize(result)));
 		}
 		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void mSetObj(Map<String, Object> map) {
+		Map<byte[],byte[]> newMap = Maps.newHashMap();
+		for(String key : map.keySet()){
+			Object obj = map.get(key);
+			byte[] prefix = extractPrefix(getDefaultNamespace());
+			newMap.put(extractKey(getStringSerializer().serialize(key), prefix), getValueSerializer().serialize(obj));
+		}
+		if(newMap.size() > 0) super.mSet(newMap);
 	}
 
 	public Long getDefaultExpiration() {

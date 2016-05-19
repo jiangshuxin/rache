@@ -2,6 +2,7 @@ package com.handpay.rache.test.api.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +15,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Maps;
 import com.handpay.rache.core.spring.StringRedisTemplateX;
 import com.handpay.rache.core.spring.connection.StringRedisConnectionX;
 import com.handpay.rache.test.anno.service.bean.Student;
@@ -139,9 +141,13 @@ public class RacheApiServiceImpl implements RacheApiService {
 			@Override
 			public List doInRedis(RedisConnection connection) throws DataAccessException {
 				StringRedisConnectionX conn = (StringRedisConnectionX)connection;
-				conn.setObj("mget_test01", s);
-				s.setName(s.getName()+"02");
-				conn.setObj("mget_test02", s);
+				Student s2 = s.clone();
+				s2.setName(s2.getName()+"03");
+				
+				Map<String,Object> map = Maps.newHashMap();
+				map.put("mget_test01", s);
+				map.put("mget_test02", s2);
+				conn.mSetObj(map);
 				
 				return conn.mGetObj(Student.class,"mget_test01","mget_test02");
 			}
