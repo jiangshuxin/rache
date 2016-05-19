@@ -174,16 +174,22 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 	}
 
 	private void extractHostAndPort(BeanDefinitionBuilder jedisConnectionFactoryBuilder) throws IOException {
-		URL server_url = new URL(StringUtils.join(getCacheServerURL(),"?appCode=",getDefaultNamespace(),"&nodeCode=test"));
-		URLConnection urlCon = server_url.openConnection();
-		urlCon.setConnectTimeout(2000);
-		urlCon.setReadTimeout(2000);
-		InputStream input = urlCon.getInputStream();
-		String in = IOUtils.toString(input);
-		input.close();
+		String in;
+		URL server_url = null;
+		try {
+			server_url = new URL(StringUtils.join(getCacheServerURL(),"?appCode=",getDefaultNamespace(),"&nodeCode=test"));
+			URLConnection urlCon = server_url.openConnection();
+			urlCon.setConnectTimeout(2000);
+			urlCon.setReadTimeout(2000);
+			InputStream input = urlCon.getInputStream();
+			in = IOUtils.toString(input);
+			input.close();
+		} catch (Exception e) {
+			throw new IllegalStateException(String.format("connect error! please check cacheServerURL=%s", getCacheServerURL()),e);
+		}
 		JSONObject jsonObj = (JSONObject)JSON.parse(in);
 		String message = jsonObj.getString("message");
-		if(!StringUtils.equals("SUCCESS", message)) throw new IllegalStateException(String.format("cacheServerURL=%s returns %s", getCacheServerURL()+server_url.getQuery(),message));
+		if(!StringUtils.equals("SUCCESS", message)) throw new IllegalStateException(String.format("cacheServerURL=%s returns %s", getCacheServerURL()+"?"+server_url.getQuery(),message));
 		//String appCode = jsonObj.getString("appCode");
 		JSONArray array = jsonObj.getJSONArray("address");
 		if(array != null && array.size() > 0){

@@ -49,6 +49,12 @@ public class RacheApiTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(dataProvider = "testCache")
+	public void testMGet(Student s){
+		List list = racheApiService.queryMulti(s);
+		System.out.println(list);
+	}
+	
+	@Test(dataProvider = "testCache")
 	public void testMaxConn(final Student s) throws InterruptedException, ExecutionException{
 		//maxIdle/maxActive=100->804   1000->1300  1->4744  10->1833  有一项为1就4800
 		long begin = System.currentTimeMillis();

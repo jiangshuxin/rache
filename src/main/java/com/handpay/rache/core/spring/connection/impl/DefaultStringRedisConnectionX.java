@@ -1,6 +1,7 @@
 package com.handpay.rache.core.spring.connection.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
@@ -11,6 +12,7 @@ import org.springframework.data.redis.connection.DefaultStringRedisConnection;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
+import com.google.common.collect.Lists;
 import com.handpay.rache.core.spring.connection.StringRedisConnectionX;
 
 public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection implements StringRedisConnectionX {
@@ -193,6 +195,14 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 		}
 		return prefix;
 	}
+	
+	private String extractPrefixStr(String nameSpace) {
+		byte[] prefix = new byte[0];
+		if(StringUtils.isNotEmpty(nameSpace)){
+			prefix = cachePrefix.prefix(nameSpace);
+		}
+		return getStringSerializer().deserialize(prefix);
+	}
 
 	@Override
 	public Object getObj(String nameSpace, String key) {
@@ -211,6 +221,41 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	@Override
 	public <T> T getObj(String nameSpace, String key, Class<T> clazz) {
 		return (T)getObj(nameSpace,key);
+	}
+
+	@Override
+	public List<?> mGetObj(String... keys) {
+		List<String> newKeyList = Lists.newArrayList();
+		for(String key : keys){
+			String prefix = extractPrefixStr(getDefaultNamespace());
+			newKeyList.add(extractKey(key, prefix));
+		}
+		List<String> resultList = super.mGet(newKeyList.toArray(new String[0]));
+		List<Object> list = Lists.newArrayList();
+		for(String result : resultList){
+			list.add(getValueSerializer().deserialize(getStringSerializer().serialize(result)));
+		}
+		return list;
+	}
+
+	private String extractKey(String key, String prefix) {
+		return StringUtils.join(prefix,key);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> mGetObj(Class<T> clazz, String... keys) {
+		List<String> newKeyList = Lists.newArrayList();
+		for(String key : keys){
+			String prefix = extractPrefixStr(getDefaultNamespace());
+			newKeyList.add(extractKey(key, prefix));
+		}
+		List<String> resultList = super.mGet(newKeyList.toArray(new String[0]));
+		List<T> list = Lists.newArrayList();
+		for(String result : resultList){
+			list.add((T)getValueSerializer().deserialize(getStringSerializer().serialize(result)));
+		}
+		return list;
 	}
 
 	public Long getDefaultExpiration() {

@@ -12,8 +12,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 
 import com.handpay.rache.core.spring.StringRedisTemplateX;
@@ -132,6 +130,22 @@ public class RacheApiServiceImpl implements RacheApiService {
 		
 		
 		return list;
+	}
+
+	@Override
+	public List queryMulti(final Student s) {
+		return stringRedisTemplateX.execute(new RedisCallback<List>() {
+
+			@Override
+			public List doInRedis(RedisConnection connection) throws DataAccessException {
+				StringRedisConnectionX conn = (StringRedisConnectionX)connection;
+				conn.setObj("mget_test01", s);
+				s.setName(s.getName()+"02");
+				conn.setObj("mget_test02", s);
+				
+				return conn.mGetObj(Student.class,"mget_test01","mget_test02");
+			}
+		});
 	}
 
 	@Override

@@ -10,4 +10,5 @@ public interface RacheApiService {
 	List queryByName1(String name);
 	List queryByNamePipelined(String name);
 	List queryByNamePersist(String name);
+	List queryMulti(Student s);
 }
