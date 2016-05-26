@@ -101,6 +101,11 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	}
 
 	@Override
+	public void setObjEx(String key, Object obj, Long expire) {
+		this.setObjEx(getDefaultNamespace(), key, obj, expire);
+	}
+
+	@Override
 	public void setObjEx(String nameSpace, byte[] key, Object obj, Long expire) {
 		byte[] prefix = extractPrefix(nameSpace);
 		byte[] result = extractKey(key, prefix);

@@ -112,6 +112,15 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 * @param expire
 	 */
 	public void setObjEx(String nameSpace,String key,Object obj,Long expire);
+	
+	/**
+	 * 设置缓存(使用默认命名空间，指定过期时间)
+	 * @param nameSpace
+	 * @param key
+	 * @param obj
+	 */
+	public void setObjEx(String key,Object obj,Long expire);
+	
 	/**
 	 * 设置缓存(最完整接口之一)
 	 * @param nameSpace

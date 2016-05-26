@@ -55,7 +55,7 @@ public class RacheApiServiceImpl implements RacheApiService {
 				@Override
 				public Student doInRedis(RedisConnection connection) throws DataAccessException {
 					StringRedisConnectionX conn = (StringRedisConnectionX)connection;
-					conn.setObjEx(name, s);//测试常用方式1
+					conn.setObjEx(name, s,300L);//测试常用方式1
 					conn.setObjEx("dubboMonitor", name, s);//测试常用方式2
 					conn.setObjEx("test_ns_", name, s, 90L);//测试完整方式
 					return s;
