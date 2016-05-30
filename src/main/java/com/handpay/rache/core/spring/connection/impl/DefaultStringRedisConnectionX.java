@@ -276,6 +276,22 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 		if(newMap.size() > 0) super.mSet(newMap);
 	}
 
+	@Override
+	public void mSetObjEx(Map<String, Object> map) {
+		mSetObj(map);
+		for(String key : map.keySet()){
+			super.expire(key, getDefaultExpiration());
+		}
+	}
+
+	@Override
+	public void mSetObjEx(Map<String, Object> map, Long expire) {
+		mSetObj(map);
+		for(String key : map.keySet()){
+			super.expire(key, expire);
+		}
+	}
+
 	public Long getDefaultExpiration() {
 		return defaultExpiration;
 	}

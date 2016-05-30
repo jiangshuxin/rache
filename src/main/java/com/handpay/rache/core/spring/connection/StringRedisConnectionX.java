@@ -208,4 +208,16 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 * @param map
 	 */
 	public void mSetObj(Map<String,Object> map);
+	
+	/**
+	 * 设置多个对象(默认命名空间，默认过期时间)
+	 * @param map
+	 */
+	public void mSetObjEx(Map<String,Object> map);
+	
+	/**
+	 * 设置多个对象(默认命名空间，指定过期时间)
+	 * @param map
+	 */
+	public void mSetObjEx(Map<String,Object> map,Long expire);
 }
