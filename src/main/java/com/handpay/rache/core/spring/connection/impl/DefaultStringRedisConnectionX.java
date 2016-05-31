@@ -232,6 +232,7 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	@Override
 	public List<?> mGetObj(String... keys) {
 		List<String> newKeyList = Lists.newArrayList();
+		if(keys == null || keys.length == 0) return newKeyList;
 		for(String key : keys){
 			String prefix = extractPrefixStr(getDefaultNamespace());
 			newKeyList.add(extractKey(key, prefix));
@@ -251,13 +252,14 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> mGetObj(Class<T> clazz, String... keys) {
+		List<T> list = Lists.newArrayList();
+		if(keys == null || keys.length == 0) return list;
 		List<String> newKeyList = Lists.newArrayList();
 		for(String key : keys){
 			String prefix = extractPrefixStr(getDefaultNamespace());
 			newKeyList.add(extractKey(key, prefix));
 		}
 		List<String> resultList = super.mGet(newKeyList.toArray(new String[0]));
-		List<T> list = Lists.newArrayList();
 		for(String result : resultList){
 			list.add((T)getValueSerializer().deserialize(getStringSerializer().serialize(result)));
 		}
@@ -267,6 +269,7 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void mSetObj(Map<String, Object> map) {
+		if(map == null) return ;
 		Map<byte[],byte[]> newMap = Maps.newHashMap();
 		for(String key : map.keySet()){
 			Object obj = map.get(key);
