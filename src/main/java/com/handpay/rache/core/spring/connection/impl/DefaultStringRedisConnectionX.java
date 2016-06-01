@@ -175,6 +175,13 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 		return getObj(getDefaultNamespace(), key);
 	}
 
+	@Override
+	public String getStr(String key) {
+		byte[] prefix = extractPrefix(getDefaultNamespace());
+		byte[] result = extractKey(getStringSerializer().serialize(key), prefix);
+		return getStringSerializer().deserialize(super.get(result));
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getObj(byte[] key, Class<T> clazz) {

@@ -37,6 +37,7 @@ public class RacheApiServiceImpl implements RacheApiService {
 				StringRedisConnectionX conn = (StringRedisConnectionX)connection;
 				System.out.println("dubboMonitor="+conn.getObj("dubboMonitor", name));
 				System.out.println("racheTest="+conn.getObj("persist", "testKey"));
+				System.out.println("simpleValue="+conn.getStr("simple_value_test"));
 				return conn.getObj(name,Student.class);
 			}
 		});
@@ -58,6 +59,7 @@ public class RacheApiServiceImpl implements RacheApiService {
 					conn.setObjEx(name, s,300L);//测试常用方式1
 					conn.setObjEx("dubboMonitor", name, s);//测试常用方式2
 					conn.setObjEx("test_ns_", name, s, 90L);//测试完整方式
+					conn.setObj("simple_value_test", "9000");
 					return s;
 				}
 			});

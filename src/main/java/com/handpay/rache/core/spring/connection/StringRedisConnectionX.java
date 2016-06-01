@@ -142,6 +142,13 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 * @return
 	 */
 	public Object getObj(String key);
+	
+	/**
+	 * 获取缓存字符串(默认命名空间)
+	 * @param key
+	 * @return
+	 */
+	public String getStr(String key);
 	/**
 	 * 获取缓存对象
 	 * @param nameSpace
