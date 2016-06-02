@@ -1,11 +1,14 @@
 package com.handpay.rache.core.spring.connection.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.springframework.data.redis.cache.DefaultRedisCachePrefix;
 import org.springframework.data.redis.cache.RedisCachePrefix;
 import org.springframework.data.redis.connection.DefaultStringRedisConnection;
@@ -144,6 +147,10 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	private boolean isSimpleValue(Object obj) {
 		return obj instanceof CharSequence || ClassUtils.isPrimitiveOrWrapper(obj.getClass());
 	}
+	
+	private boolean isSimpleType(Class<?> clazz) {
+		return CharSequence.class.isAssignableFrom(clazz) || ClassUtils.isPrimitiveOrWrapper(clazz);
+	}
 
 	@Override
 	public void setObj(String key, Object obj) {
@@ -182,16 +189,53 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 		return getStringSerializer().deserialize(super.get(result));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getObj(byte[] key, Class<T> clazz) {
-		return (T)getObj(key);
+	public Boolean getBool(String key) {
+		return Boolean.parseBoolean(getStr(key));
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getInt(String key) {
+		return Integer.parseInt(getStr(key));
+	}
+
+	@Override
+	public Long getLong(String key) {
+		return Long.parseLong(getStr(key));
+	}
+
+	@Override
+	public Double getDouble(String key) {
+		return Double.parseDouble(getStr(key));
+	}
+
+	@Override
+	public BigDecimal getDecimal(String key) {
+		return new BigDecimal(getStr(key));
+	}
+
+	@Override
+	public Float getFloat(String key) {
+		return Float.parseFloat(getStr(key));
+	}
+
+	@Override
+	public Short getShort(String key) {
+		return Short.parseShort(getStr(key));
+	}
+
+	@Override
+	public <T> T getObj(byte[] key, Class<T> clazz) {
+		Object value = getObj(key);
+		if(value == null) return null;
+		return extractSimpleTypeConstruct(clazz, value);
+	}
+
 	@Override
 	public <T> T getObj(String key, Class<T> clazz) {
-		return (T)getObj(key);
+		Object value = getObj(key);
+		if(value == null) return null;
+		return extractSimpleTypeConstruct(clazz, value);
 	}
 
 	@Override
@@ -224,16 +268,31 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 		return getValueSerializer().deserialize(super.get(result));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getObj(String nameSpace, byte[] key, Class<T> clazz) {
-		return (T)getObj(nameSpace,key);
+		Object value = getObj(nameSpace,key);
+		if(value == null) return null;
+		return extractSimpleTypeConstruct(clazz, value);
+	}
+
+	@Override
+	public <T> T getObj(String nameSpace, String key, Class<T> clazz) {
+		Object value = getObj(nameSpace,key);
+		if(value == null) return null;
+		return extractSimpleTypeConstruct(clazz, value);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T getObj(String nameSpace, String key, Class<T> clazz) {
-		return (T)getObj(nameSpace,key);
+	private <T> T extractSimpleTypeConstruct(Class<T> clazz, Object value) {
+		if(isSimpleType(clazz)){
+			try {
+				return ConstructorUtils.invokeConstructor(clazz, new Object[]{value.toString()}, new Class[]{String.class});
+			} catch (Exception e) {
+				throw new IllegalStateException(e);
+			} 
+		}else{
+			return (T)value;//JSONParser能够保证类型一致
+		}
 	}
 
 	@Override

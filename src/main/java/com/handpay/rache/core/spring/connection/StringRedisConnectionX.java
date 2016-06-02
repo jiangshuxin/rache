@@ -1,5 +1,6 @@
 package com.handpay.rache.core.spring.connection;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -137,7 +138,16 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 */
 	public Object getObj(byte[] key);
 	/**
-	 * 获取缓存对象(默认命名空间)
+	 * 获取缓存对象(默认命名空间)，
+	 * 字符及基本类型请调用其他方法
+	 * @see #getStr(String)
+	 * @see #getBool(String)
+	 * @see #getInt(String)
+	 * @see #getLong(String)
+	 * @see #getDobule(String)
+	 * @see #getFloat(String)
+	 * @see #getShort(String)
+	 * @see #getObj(String, Class)
 	 * @param key
 	 * @return
 	 */
@@ -149,6 +159,13 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 * @return
 	 */
 	public String getStr(String key);
+	public Boolean getBool(String key);
+	public Integer getInt(String key);
+	public Long getLong(String key);
+	public Double getDouble(String key);
+	public BigDecimal getDecimal(String key);
+	public Float getFloat(String key);
+	public Short getShort(String key);
 	/**
 	 * 获取缓存对象
 	 * @param nameSpace
@@ -167,14 +184,14 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	/**
 	 * 获取缓存对象(默认命名空间)
 	 * @param key
-	 * @param clazz
+	 * @param clazz 目标类型
 	 * @return
 	 */
 	public <T> T getObj(byte[] key,Class<T> clazz);
 	/**
 	 * 获取缓存对象(默认命名空间)
 	 * @param key
-	 * @param clazz
+	 * @param clazz 目标类型
 	 * @return
 	 */
 	public <T> T getObj(String key,Class<T> clazz);
@@ -182,7 +199,7 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 * 获取缓存对象
 	 * @param nameSpace
 	 * @param key
-	 * @param clazz
+	 * @param clazz 目标类型
 	 * @return
 	 */
 	public <T> T getObj(String nameSpace,byte[] key,Class<T> clazz);
@@ -190,7 +207,7 @@ public interface StringRedisConnectionX extends StringRedisConnection {
 	 * 获取缓存对象
 	 * @param nameSpace
 	 * @param key
-	 * @param clazz
+	 * @param clazz 目标类型
 	 * @return
 	 */
 	public <T> T getObj(String nameSpace,String key,Class<T> clazz);
