@@ -149,7 +149,7 @@ public class RacheApiServiceImpl implements RacheApiService {
 				Map<String,Object> map = Maps.newHashMap();
 				map.put("mget_test01", s);
 				map.put("mget_test02", s2);
-				conn.mSetObj(map);
+				conn.mSetObjEx(map,100L);
 				
 				return conn.mGetObj(Student.class,"mget_test01","mget_test02");
 			}

@@ -1,6 +1,5 @@
 package com.handpay.rache.core.spring.connection.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -349,7 +348,8 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	public void mSetObjEx(Map<String, Object> map) {
 		mSetObj(map);
 		for(String key : map.keySet()){
-			super.expire(key, getDefaultExpiration());
+			String prefix = extractPrefixStr(getDefaultNamespace());
+			super.expire(extractKey(key, prefix), getDefaultExpiration());
 		}
 	}
 
@@ -357,7 +357,8 @@ public class DefaultStringRedisConnectionX extends DefaultStringRedisConnection 
 	public void mSetObjEx(Map<String, Object> map, Long expire) {
 		mSetObj(map);
 		for(String key : map.keySet()){
-			super.expire(key, expire);
+			String prefix = extractPrefixStr(getDefaultNamespace());
+			super.expire(extractKey(key, prefix), expire);
 		}
 	}
 
