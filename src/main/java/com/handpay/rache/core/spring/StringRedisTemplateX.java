@@ -11,6 +11,7 @@ import com.handpay.rache.core.spring.connection.impl.DefaultStringRedisConnectio
 /**
  * RedisTemplate实用型扩展类
  * <li>推荐使用实用型扩展接口StringRedisConnectionX进行回调方法的逻辑编写
+ * <li>本类中所有操作redis的方法均不含命名空间
  * <li>根据命名空间维度指定过期时间
  * <li>具有StringRedisTemplate的一切功能
  * @see com.handpay.rache.core.spring.connection.StringRedisConnectionX
