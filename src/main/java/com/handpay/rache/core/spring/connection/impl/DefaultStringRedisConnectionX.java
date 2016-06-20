@@ -5,27 +5,19 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
-import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.cache.DefaultRedisCachePrefix;
 import org.springframework.data.redis.cache.RedisCachePrefix;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.connection.DefaultStringRedisConnection;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.connection.RedisListCommands.Position;
-import org.springframework.data.redis.connection.RedisStringCommands.BitOperation;
-import org.springframework.data.redis.connection.RedisZSetCommands.Aggregate;
-import org.springframework.data.redis.connection.RedisZSetCommands.Tuple;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.connection.SortParameters;
-import org.springframework.data.redis.connection.StringRedisConnection.StringTuple;
-import org.springframework.data.redis.connection.Subscription;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 import com.google.common.collect.Lists;

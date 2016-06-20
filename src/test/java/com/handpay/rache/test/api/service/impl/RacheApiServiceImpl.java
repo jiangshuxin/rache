@@ -13,7 +13,10 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
+import org.testng.Assert;
 
 import com.google.common.collect.Maps;
 import com.handpay.rache.core.spring.StringRedisTemplateX;
@@ -38,6 +41,7 @@ public class RacheApiServiceImpl implements RacheApiService {
 				System.out.println("dubboMonitor="+conn.getObj("dubboMonitor", name));
 				System.out.println("racheTest="+conn.getObj("persist", "testKey"));
 				System.out.println("simpleValue="+conn.getObj("simple_value_test",StringBuilder.class).getClass().getName());
+				Assert.assertTrue(conn.exists("simple_value_test"));
 				return conn.getObj(name,Student.class);
 			}
 		});
@@ -138,6 +142,19 @@ public class RacheApiServiceImpl implements RacheApiService {
 
 	@Override
 	public List queryMulti(final Student s) {
+		stringRedisTemplateX.boundValueOps("multi").set("testValue");
+		List list = stringRedisTemplateX.execute(new SessionCallback<List>() {
+
+			@Override
+			public List execute(RedisOperations operations) throws DataAccessException {
+				operations.multi();
+				operations.boundValueOps("multi");
+				operations.delete("multi");
+				return operations.exec();
+			}
+		});
+		System.out.println("multi value="+list.get(0));
+		
 		return stringRedisTemplateX.execute(new RedisCallback<List>() {
 
 			@Override
