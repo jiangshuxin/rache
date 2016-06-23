@@ -78,5 +78,6 @@ public class RacheApiTest extends AbstractTestNGSpringContextTests {
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("Multi thread mode, NoPipelined=="+(end-begin));
+		Thread.sleep(10000);
 	}
 }
