@@ -35,13 +35,18 @@
 	<!-- RacheBootstrap必选 -->
 	<bean class="com.handpay.rache.core.spring.bootstrap.RacheBootstrap" id="RacheBootstrap1">
 		<property name="targetBeanId" value="stringRedisTemplateX"></property>
-		<property name="maxIdle" value="${redis.maxIdle}" />
-		<property name="maxActive" value="${redis.maxActive}" />
-		<property name="maxWait" value="${redis.maxWait}" />
 		<property name="cacheServerURL" value="${redis.cacheServerURL}"></property>
 		<property name="defaultExpiration" value="${redis.defaultExpiration}"></property>
 		<property name="defaultNamespace" value="${redis.defaultNamespace}"></property>
 		<property name="expireMapBeanId" value="expireMap"></property>
+		<property name="propMap">
+			<map>
+				<entry key="maxIdle" value="${redis.maxIdle}"></entry>
+				<entry key="maxActive" value="${redis.maxActive}"></entry>
+				<entry key="maxWait" value="${redis.maxWait}"></entry>
+				<entry key="testOnBorrow" value="${redis.testOnBorrow}"></entry>
+			</map>
+		</property>
 	</bean>
 	
 	<!-- expireMap可选 -->
@@ -53,13 +58,18 @@
 	<!-- 此RacheBootstrap可选，用于获取其他redis连接 -->
 	<bean class="com.handpay.rache.core.spring.bootstrap.RacheBootstrap" id="RacheBootstrap2">
 		<property name="targetBeanId" value="stringRedisTemplateY"></property>
-		<property name="maxIdle" value="${redis.maxIdle}" />
-		<property name="maxActive" value="${redis.maxActive}" />
-		<property name="maxWait" value="${redis.maxWait}" />
 		<property name="cacheServerURL" value="${redis.cacheServerURL}"></property>
 		<property name="defaultExpiration" value="${redis.defaultExpiration}"></property>
 		<property name="defaultNamespace" value="${redis.defaultNamespace}"></property>
 		<property name="expireMapBeanId" value="expireMap"></property>
+		<property name="propMap">
+			<map>
+				<entry key="maxIdle" value="${redis.maxIdle}"></entry>
+				<entry key="maxActive" value="${redis.maxActive}"></entry>
+				<entry key="maxWait" value="${redis.maxWait}"></entry>
+				<entry key="testOnBorrow" value="${redis.testOnBorrow}"></entry>
+			</map>
+		</property>
 	</bean>
 	<!-- Rache部分End -->
 	

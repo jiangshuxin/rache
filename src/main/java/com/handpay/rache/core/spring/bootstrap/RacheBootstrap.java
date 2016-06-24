@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,12 +39,8 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 	private String targetBeanId;
 	//命名空间/超时时间映射beanId
 	private String expireMapBeanId;
-	//最大空闲
-	private int maxIdle;
-	//最大活跃
-	private int maxActive;
-	//最大等待
-	private int maxWait;
+	//属性字典
+	private Map<String,String> propMap;
 	//redis connection连接超时时间
 	private int redisTimeout;
 	//默认过期时间
@@ -167,9 +164,9 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 	private void extractJedisPoolConfigBuilder(String jedisBeanName,
 			DefaultListableBeanFactory defaultListableBeanFactory) {
 		BeanDefinitionBuilder jedisPoolConfigBuilder = BeanDefinitionBuilder.genericBeanDefinition(JedisPoolConfig.class);
-		jedisPoolConfigBuilder.addPropertyValue("maxIdle", getMaxIdle());
-		jedisPoolConfigBuilder.addPropertyValue("maxActive", getMaxActive());
-		jedisPoolConfigBuilder.addPropertyValue("maxWait", getMaxWait());
+		for(String key : getPropMap().keySet()){
+			jedisPoolConfigBuilder.addPropertyValue(key, getPropMap().get(key));
+		}
 		defaultListableBeanFactory.registerBeanDefinition(jedisBeanName, jedisPoolConfigBuilder.getBeanDefinition());
 	}
 
@@ -208,28 +205,12 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 		this.targetBeanId = targetBeanId;
 	}
 
-	public int getMaxIdle() {
-		return maxIdle;
+	public Map<String, String> getPropMap() {
+		return propMap;
 	}
 
-	public void setMaxIdle(int maxIdle) {
-		this.maxIdle = maxIdle;
-	}
-
-	public int getMaxActive() {
-		return maxActive;
-	}
-
-	public void setMaxActive(int maxActive) {
-		this.maxActive = maxActive;
-	}
-
-	public int getMaxWait() {
-		return maxWait;
-	}
-
-	public void setMaxWait(int maxWait) {
-		this.maxWait = maxWait;
+	public void setPropMap(Map<String, String> propMap) {
+		this.propMap = propMap;
 	}
 
 	public int getRedisTimeout() {
