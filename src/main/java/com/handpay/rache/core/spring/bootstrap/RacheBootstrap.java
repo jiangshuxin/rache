@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -34,7 +35,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @author sxjiang
  *
  */
-public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
+public class RacheBootstrap implements ApplicationContextAware,InitializingBean,BeanPostProcessor{
 	//StringRedisTemplateX的beanId
 	private String targetBeanId;
 	//命名空间/超时时间映射beanId
@@ -299,5 +300,15 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean{
 
 	public void setExpireMapBeanId(String expireMapBeanId) {
 		this.expireMapBeanId = expireMapBeanId;
+	}
+
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
+
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
 	}
 }

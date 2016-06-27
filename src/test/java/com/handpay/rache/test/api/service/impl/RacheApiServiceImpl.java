@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -25,7 +24,6 @@ import com.handpay.rache.test.anno.service.bean.Student;
 import com.handpay.rache.test.api.service.RacheApiService;
 
 @Service("racheApiService")
-@DependsOn("RacheBootstrap1")
 public class RacheApiServiceImpl implements RacheApiService {
 	
 	@Autowired
