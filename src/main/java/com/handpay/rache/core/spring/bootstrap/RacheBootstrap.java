@@ -156,7 +156,7 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean,
 	private void extractJedisConnectionFactoryBuilder(String jedisBeanName, String jedisFacBeanName,
 			DefaultListableBeanFactory defaultListableBeanFactory) throws IOException {
 		BeanDefinitionBuilder jedisConnectionFactoryBuilder = BeanDefinitionBuilder.genericBeanDefinition(JedisConnectionFactory.class);
-		jedisConnectionFactoryBuilder.addPropertyValue("timeout", redisTimeout);
+		if(redisTimeout > 0) jedisConnectionFactoryBuilder.addPropertyValue("timeout", redisTimeout);
 		jedisConnectionFactoryBuilder.addPropertyReference("poolConfig", jedisBeanName);
 		extractHostAndPort(jedisConnectionFactoryBuilder);
 		defaultListableBeanFactory.registerBeanDefinition(jedisFacBeanName, jedisConnectionFactoryBuilder.getBeanDefinition());
