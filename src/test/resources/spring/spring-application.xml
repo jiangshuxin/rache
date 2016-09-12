@@ -36,6 +36,7 @@
 	<bean class="com.handpay.rache.core.spring.bootstrap.RacheBootstrap" id="RacheBootstrap1">
 		<property name="targetBeanId" value="stringRedisTemplateX"></property>
 		<property name="cacheServerURL" value="${redis.cacheServerURL}"></property>
+		<property name="password" value="${redis.password}"></property>
 		<property name="defaultExpiration" value="${redis.defaultExpiration}"></property>
 		<property name="defaultNamespace" value="${redis.defaultNamespace}"></property>
 		<property name="expireMapBeanId" value="expireMap"></property>

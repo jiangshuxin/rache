@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>rache</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<parent>
 		<groupId>com.handpay</groupId>
 		<artifactId>hp-framework-pom</artifactId>
@@ -13,19 +13,19 @@
 		<repository>
 			<id>handpay-public</id>
 			<name>Handpay Public Repository</name>
-			<url>http://mvnrep.handpay.com.cn/nexus/content/repositories/handpay-public/</url>
+			<url>http://maven.99wuxian.com/nexus/content/repositories/handpay-public/</url>
 		</repository>
 	</repositories>
 
-	<!-- distribution config -->
+	<!-- distribution config (mvnrep.handpay.com.cn)-->
 	<distributionManagement>
 		<repository>
 			<id>handpay-releases</id>
-			<url>http://mvnrep.handpay.com.cn/nexus/content/repositories/handpay-releases</url>
+			<url>http://maven.99wuxian.com/nexus/content/repositories/handpay-releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>handpay-snapshots</id>
-			<url>http://mvnrep.handpay.com.cn/nexus/content/repositories/handpay-snapshots</url>
+			<url>http://maven.99wuxian.com/nexus/content/repositories/handpay-snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 

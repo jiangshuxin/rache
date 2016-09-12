@@ -44,6 +44,8 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean,
 	private Map<String,String> propMap;
 	//redis connection连接超时时间
 	private int redisTimeout;
+	//redis连接密码
+	private String password;
 	//默认过期时间
 	private long defaultExpiration;
 	//默认命名空间
@@ -157,6 +159,7 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean,
 			DefaultListableBeanFactory defaultListableBeanFactory) throws IOException {
 		BeanDefinitionBuilder jedisConnectionFactoryBuilder = BeanDefinitionBuilder.genericBeanDefinition(JedisConnectionFactory.class);
 		if(redisTimeout > 0) jedisConnectionFactoryBuilder.addPropertyValue("timeout", redisTimeout);
+		if(StringUtils.isNotEmpty(getPassword())) jedisConnectionFactoryBuilder.addPropertyValue("password", getPassword());
 		jedisConnectionFactoryBuilder.addPropertyReference("poolConfig", jedisBeanName);
 		extractHostAndPort(jedisConnectionFactoryBuilder);
 		defaultListableBeanFactory.registerBeanDefinition(jedisFacBeanName, jedisConnectionFactoryBuilder.getBeanDefinition());
@@ -220,6 +223,14 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean,
 
 	public void setRedisTimeout(int redisTimeout) {
 		this.redisTimeout = redisTimeout;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public long getDefaultExpiration() {
