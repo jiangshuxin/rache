@@ -104,6 +104,15 @@ public class RacheBootstrap implements ApplicationContextAware,InitializingBean,
 		extractStringRedisTemplateXBuilder(strRedisTempBeanName, defaultListableBeanFactory);
 		
 		extractRedisCacheManagerXBuilder(cacheBeanName, defaultListableBeanFactory);
+
+		afterBeanCreated();
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void afterBeanCreated() {
+		RedisTemplate template = applicationContext.getBean(getRedisTempBeanId(), RedisTemplate.class);
+		template.setKeySerializer(template.getStringSerializer());
+		template.setHashKeySerializer(template.getStringSerializer());
 	}
 
 	private void extractRedisCacheManagerXBuilder(String cacheBeanName,
